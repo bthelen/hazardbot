@@ -12,7 +12,3 @@ inputs:
 
 run:
   path: hazardbot-source/ci/tasks/build-and-test.sh
-params:
-  TWILIO_AUTH_TOKEN: ((twilio-auth-token))
-  TWILIO_PHONE_NUMBER: ((twilio-phone-number))
-  TWILIO_ACCOUNT_SID: ((twilio-account-sid))
