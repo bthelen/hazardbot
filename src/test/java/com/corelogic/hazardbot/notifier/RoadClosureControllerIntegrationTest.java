@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@ActiveProfiles("mock")
+@ActiveProfiles({"mock", "test"})
 @SpringBootTest(classes = HazardbotApplication.class)
 public class RoadClosureControllerIntegrationTest {
 
@@ -31,15 +31,15 @@ public class RoadClosureControllerIntegrationTest {
         final MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/roadclosures")
-                    .contentType(MediaType.APPLICATION_JSON_UTF8)
-                    .content("{\"sr_location\":\"blah\",\"cross_streets\":\"blahblah\"}")
-                )
-                .andDo(print())
-                .andExpect(status().isCreated());
+            .contentType(MediaType.APPLICATION_JSON_UTF8)
+            .content("{\"sr_location\":\"blah\",\"cross_streets\":\"blahblah\"}")
+        )
+            .andDo(print())
+            .andExpect(status().isCreated());
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/roadclosures"))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().json("[{\"sr_location\":\"blah\",\"cross_streets\":\"blahblah\"}]"));
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(content().json("[{\"sr_location\":\"blah\",\"cross_streets\":\"blahblah\"}]"));
     }
 }
