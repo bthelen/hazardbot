@@ -1,0 +1,18 @@
+---
+platform: linux
+
+image_resource:
+  type: docker-image
+  source:
+    repository: openjdk:8
+    tag: "8-jdk-alpine"
+
+inputs:
+- name: hazardbot-source
+
+run:
+  path: hazardbot-source/ci/tasks/build-and-test.sh
+params:
+  TWILIO_AUTH_TOKEN: ((twilio-auth-token))
+  TWILIO_PHONE_NUMBER: ((twilio-phone-number))
+  TWILIO_ACCOUNT_SID: ((twilio-account-sid))

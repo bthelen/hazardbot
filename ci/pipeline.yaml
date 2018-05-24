@@ -1,0 +1,21 @@
+groups:
+- name: main
+  jobs:
+  - build-and-test
+
+resources:
+- name: hazardbot-source
+  type: git
+  source:
+    branch: master
+    uri: https://github.com/bthelen/hazardbot.git
+
+jobs:
+- name: build-and-test
+  serial: true
+  public: true
+  plan:
+  - get: hazardbot-source
+    trigger: true
+  - task: build-and-test
+    file: hazardbot-source/ci/tasks/build-and-test.yml
