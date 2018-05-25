@@ -8,5 +8,8 @@ image_resource:
 inputs:
 - name: hazardbot-source
 
+outputs:
+- name: hazardbot-build-artifacts
+
 run:
   path: hazardbot-source/ci/tasks/build-and-test.sh

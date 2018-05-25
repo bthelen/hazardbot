@@ -31,4 +31,4 @@ jobs:
       TWILIO_ACCOUNT_SID: {{twilio-account-sid}}
   - put: build-artifacts
     params:
-      file: hazardbot-source/hazardbot-*.tgz
+      file: hazardbot-build-artifacts/hazardbot-*.tgz
