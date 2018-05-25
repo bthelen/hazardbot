@@ -4,3 +4,7 @@ set -xe
 
 cd hazardbot-source
 ./gradlew test assemble
+
+readonly VERSION=$(date +%Y%m%d%H%M%S)
+
+tar zcvf hazardbot-$(VERSION).tgz build/libs/*.jar
