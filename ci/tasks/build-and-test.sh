@@ -7,4 +7,4 @@ cd hazardbot-source
 
 readonly VERSION=$(date +%Y%m%d%H%M%S)
 
-tar zcvf hazardbot-$(VERSION).tgz build/libs/*.jar
+tar zcvf hazardbot-$VERSION.tgz build/libs/*.jar
