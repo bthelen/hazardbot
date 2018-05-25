@@ -9,6 +9,12 @@ resources:
   source:
     branch: master
     uri: https://github.com/bthelen/hazardbot.git
+- name: build-artifacts
+  type: s3
+  source:
+    bucket: pa-bthelen-build-artifacts
+    access_key_id: {{access-key-id}}
+    secret_access_key: {{secret-access-key}}
 
 jobs:
 - name: build-and-test
@@ -23,4 +29,6 @@ jobs:
       TWILIO_AUTH_TOKEN: {{twilio-auth-token}}
       TWILIO_PHONE_NUMBER: {{twilio-phone-number}}
       TWILIO_ACCOUNT_SID: {{twilio-account-sid}}
-
+  - put: build-artifacts
+    params:
+      file: hazardbot-*.tgz
