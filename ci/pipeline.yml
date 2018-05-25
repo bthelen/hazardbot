@@ -13,6 +13,7 @@ resources:
   type: s3
   source:
     bucket: pa-bthelen-build-artifacts
+    regexp: hazardbot-(.*).tgz
     access_key_id: {{access-key-id}}
     secret_access_key: {{secret-access-key}}
 
