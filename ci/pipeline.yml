@@ -46,10 +46,12 @@ jobs:
   serial: true
   plan:
   - get: build-artifacts
+    passed:
+      - build-and-test
     trigger: true
   - get: hazardbot-source
   - task: get-current-app-color
-    file: hazardbot-source/ci/tasks/current-app-get-info.yml
+    file: hazardbot-source/ci/tasks/get-current-app-info.yml
     params:
       APP_NAME: hazardbot
       PWS_APP_SUFFIX: bet
