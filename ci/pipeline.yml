@@ -3,6 +3,7 @@ groups:
   jobs:
   - build-and-test
   - deploy-new-app
+  - promote-new-version
 
 resources:
 - name: hazardbot-source
@@ -72,3 +73,31 @@ jobs:
     params:
       manifest: app-manifest-output/manifest-bg.yml
       path: app-manifest-output/hazardbot-*.jar
+- name: promote-new-version
+  serial: true
+  public: true
+  plan:
+  - get: hazardbot-source
+    trigger: true
+    passed:
+      - deploy-new-app
+  - task: get-current-app-color
+    file: hazardbot-source/ci/tasks/get-current-app-info.yml
+    params:
+      APP_NAME: hazardbot
+      PWS_APP_SUFFIX: bet
+      PWS_API: {{pws-api}}
+      PWS_ORG: {{pws-organization}}
+      PWS_USER: {{deploy-username}}
+      PWS_PWD: {{deploy-password}}
+      PWS_SPACE: {{pws-space}}
+  - task: switch-app-routes
+    file: hazardbot-source/ci/tasks/update-routes.yml
+    params:
+      PWS_APP_SUFFIX: bet
+      PWS_APP_DOMAIN: {{pws-app-domain}}
+      PWS_API: {{pws-api}}
+      PWS_ORG: {{pws-organization}}
+      PWS_USER: {{deploy-username}}
+      PWS_PWD: {{deploy-password}}
+      PWS_SPACE: {{pws-space}}
