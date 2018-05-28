@@ -63,6 +63,7 @@ jobs:
   - task: prepare-app-manifest
     file: hazardbot-source/ci/tasks/prepare-app-manifest.yml
     params:
+      APP_NAME: hazardbot
       PWS_APP_SUFFIX: bet
   - put: PWS
     params:
