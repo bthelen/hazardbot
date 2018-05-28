@@ -66,5 +66,5 @@ jobs:
       PWS_APP_SUFFIX: bet
   - put: PWS
     params:
-      manifest: build-artifacts/manifest-bg.yml
-      path: build-artifacts/hazardbot-*.jar
+      manifest: build-artifacts/manifests/manifest-bg.yml
+      path: build-artifacts/build/libs/hazardbot-*.jar
