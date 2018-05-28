@@ -7,6 +7,6 @@ applications:
   path: hazardbot-*.jar
   buildpack: java_buildpack
   services:
-    - hazardbot-mysql
+    - bet-mysql
   env:
     SPRING_PROFILES_ACTIVE: pws
