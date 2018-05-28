@@ -2,6 +2,7 @@ groups:
 - name: main
   jobs:
   - build-and-test
+  - deploy-new-app
 
 resources:
 - name: hazardbot-source
@@ -16,11 +17,19 @@ resources:
     regexp: hazardbot-(.*).tgz
     access_key_id: {{access-key-id}}
     secret_access_key: {{secret-access-key}}
+- name: PWS
+  type: cf
+  source:
+    api: {{pws-api}}
+    organization: {{pws-organization}}
+    username: {{deploy-username}}
+    password: {{deploy-password}}
+    skip_cert_check: true
+    space: {{pws-space}}
 
 jobs:
 - name: build-and-test
   serial: true
-  public: true
   plan:
   - get: hazardbot-source
     trigger: true
@@ -33,3 +42,27 @@ jobs:
   - put: build-artifacts
     params:
       file: hazardbot-build-artifacts/hazardbot-*.tgz
+- name: deploy-new-app
+  serial: true
+  plan:
+  - get: build-artifacts
+    trigger: true
+  - get: hazardbot-source
+  - task: get-current-app-color
+    file: hazardbot-source/ci/tasks/current-app-get-info.yml
+    params:
+      APP_NAME: hazardbot
+      PWS_APP_SUFFIX: bet
+      PWS_API: {{pws-api}}
+      PWS_ORG: {{pws-organization}}
+      PWS_USER: {{deploy-username}}
+      PWS_PWD: {{deploy-password}}
+      PWS_SPACE: {{pws-space}}
+  - task: prepare-app-manifest
+    file: hazardbot-source/ci/tasks/prepare-app-manifest.yml
+    params:
+      PWS_APP_SUFFIX: bet
+  - put: PWS
+    params:
+      manifest: build-artifacts/manifest-bg.yml
+      path: build-artifacts/hazardbot-*.jar
