@@ -94,6 +94,7 @@ jobs:
   - task: switch-app-routes
     file: hazardbot-source/ci/tasks/update-routes.yml
     params:
+      APP_NAME: hazardbot
       PWS_APP_SUFFIX: bet
       PWS_APP_DOMAIN: {{pws-app-domain}}
       PWS_API: {{pws-api}}
