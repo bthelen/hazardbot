@@ -65,6 +65,9 @@ jobs:
     params:
       APP_NAME: hazardbot
       PWS_APP_SUFFIX: bet
+      TWILIO_AUTH_TOKEN: {{twilio-auth-token}}
+      TWILIO_PHONE_NUMBER: {{twilio-phone-number}}
+      TWILIO_ACCOUNT_SID: {{twilio-account-sid}}
   - put: PWS
     params:
       manifest: app-manifest-output/manifest-bg.yml

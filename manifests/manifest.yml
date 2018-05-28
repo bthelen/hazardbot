@@ -1,6 +1,6 @@
 ---
 applications:
-- name: pa-bthelen-hazardbot
+- name: hazardbot-bet
   memory: 1G
   disk_quota: 500M
   instances: 1
@@ -10,3 +10,6 @@ applications:
     - bet-mysql
   env:
     SPRING_PROFILES_ACTIVE: pws
+    TWILIO_AUTH_TOKEN: #TWILIO_AUTH_TOKEN#
+    TWILIO_PHONE_NUMBER: #TWILIO_PHONE_NUMBER#
+    TWILIO_ACCOUNT_SID: #TWILIO_ACCOUNT_SID#
