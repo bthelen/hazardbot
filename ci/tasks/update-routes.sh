@@ -27,10 +27,13 @@ cf map-route $NEXT_APP_HOSTNAME $PWS_DOMAIN_NAME --hostname $MAIN_ROUTE_HOSTNAME
 
 cf routes
 
-echo "Removing previous main app route that pointed to $CURRENT_APP_HOSTNAME instance"
-
 set +e
+echo "Removing previous main app route that pointed to $CURRENT_APP_HOSTNAME instance"
 cf unmap-route $CURRENT_APP_HOSTNAME $PWS_DOMAIN_NAME --hostname $MAIN_ROUTE_HOSTNAME
+echo "Unmapping the default route on the new app, so it only responds to the default route"
+cf unmap-route $NEXT_APP_HOSTNAME $PWS_DOMAIN_NAME --hostname $NEXT_APP_HOSTNAME
+echo "Cleanup by deleting old $CURRENT_APP_HOSTNAME deployment"
+cf delete $CURRENT_APP_HOSTNAME
 set -e
 
 echo "Routes updated"
