@@ -32,7 +32,7 @@ public class EventProducerService {
         this.subscriberLookupService = subscriberLookupService;
     }
 
-    @Scheduled(fixedRate = 30000)
+    @Scheduled(fixedRate = 43200000)
     public void checkForEvents() {
         log.info("Firing checkForEvents");
         final List<RoadClosure> roadClosures = stubRoadClosureRepository.getNewRoadClosureEvents();
