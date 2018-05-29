@@ -12,7 +12,7 @@ cf login -u $PWS_USER -p $PWS_PWD -o "$PWS_ORG" -s "$PWS_SPACE"
 cf apps
 
 set +e
-cf apps | grep "$APP_NAME-$PWS_APP_SUFFIX" | grep green
+cf apps | grep "$APP_NAME-$PWS_APP_SUFFIX.$PWS_APP_DOMAIN" | grep green
 if [ $? -eq 0 ]
 then
   echo "green" > ./current-app-info/current-app.txt
