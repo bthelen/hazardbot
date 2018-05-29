@@ -33,7 +33,7 @@ cf unmap-route $CURRENT_APP_HOSTNAME $PWS_DOMAIN_NAME --hostname $MAIN_ROUTE_HOS
 echo "Unmapping the default route on the new app, so it only responds to the default route"
 cf unmap-route $NEXT_APP_HOSTNAME $PWS_DOMAIN_NAME --hostname $NEXT_APP_HOSTNAME
 echo "Cleanup by deleting old $CURRENT_APP_HOSTNAME deployment"
-cf delete $CURRENT_APP_HOSTNAME
+cf delete -f $CURRENT_APP_HOSTNAME
 set -e
 
 echo "Routes updated"
