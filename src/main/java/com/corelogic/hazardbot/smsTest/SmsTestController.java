@@ -39,7 +39,7 @@ public class SmsTestController {
                           Model model) {
         final Subscriber subscriber = subscriberService.getSubscriber(subscriberId);
 
-        final Event event = new Event("Hello, this is CoreLogic HazardBot 🤖");
+        final Event event = new Event("Hello, this is HazardBot 🤖");
         notificationService.notifySubscribers(event, Collections.singletonList(subscriber));
 
         model.addAttribute("subscriber", subscriber);
