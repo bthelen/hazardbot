@@ -6,8 +6,6 @@ applications:
   instances: 1
   path: hazardbot-*.jar
   buildpack: java_buildpack
-  services:
-    - bet-mysql
   env:
     SPRING_PROFILES_ACTIVE: pws
     TWILIO_AUTH_TOKEN: #TWILIO_AUTH_TOKEN#
