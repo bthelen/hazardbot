@@ -11,6 +11,7 @@ resources:
   source:
     branch: master
     uri: https://github.com/bthelen/hazardbot.git
+    webhook_token: {{git-webhook-token}}
 - name: build-artifacts
   type: s3
   source:
@@ -33,7 +34,7 @@ jobs:
   serial: true
   plan:
   - get: hazardbot-source
-    trigger: true
+    trigger: false
   - task: build-and-test
     file: hazardbot-source/ci/tasks/build-and-test.yml
     params:
@@ -79,7 +80,7 @@ jobs:
   public: true
   plan:
   - get: hazardbot-source
-    trigger: true
+    trigger: false
     passed:
       - deploy-new-app
   - task: get-current-app-color
