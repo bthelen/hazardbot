@@ -9,6 +9,7 @@ resources:
 - name: hazardbot-source
   type: git
   webhook_token: {{git-webhook-token}}
+  check_every: 1h
   source:
     branch: master
     uri: https://github.com/bthelen/hazardbot.git
@@ -34,7 +35,7 @@ jobs:
   serial: true
   plan:
   - get: hazardbot-source
-    trigger: false
+    trigger: true
   - task: build-and-test
     file: hazardbot-source/ci/tasks/build-and-test.yml
     params:
