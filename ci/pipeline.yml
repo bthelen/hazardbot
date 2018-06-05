@@ -81,7 +81,7 @@ jobs:
   public: true
   plan:
   - get: hazardbot-source
-    trigger: false
+    trigger: true
     passed:
       - deploy-new-app
   - task: get-current-app-color
