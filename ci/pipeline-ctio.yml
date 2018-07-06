@@ -1,0 +1,108 @@
+groups:
+- name: main
+  jobs:
+  - build-and-test
+  - deploy-new-app
+  - promote-new-version
+
+resources:
+- name: hazardbot-source
+  type: git
+  webhook_token: ((git-webhook-token))
+  check_every: 1h
+  source:
+    branch: master
+    uri: https://github.com/bthelen/hazardbot.git
+- name: build-artifacts
+  type: s3
+  source:
+    bucket: pa-bthelen-build-artifacts
+    regexp: hazardbot-(.*).tgz
+    access_key_id: ((access-key-id))
+    secret_access_key: ((secret-access-key))
+- name: PWS
+  type: cf
+  source:
+    api: ((pws-api))
+    organization: ((pws-organization))
+    username: ((deploy-username))
+    password: ((deploy-password))
+    skip_cert_check: true
+    space: ((pws-space))
+
+jobs:
+- name: build-and-test
+  serial: true
+  plan:
+  - get: hazardbot-source
+    trigger: true
+  - task: build-and-test
+    file: hazardbot-source/ci/tasks/build-and-test.yml
+    params:
+      TWILIO_AUTH_TOKEN: ((twilio-auth-token))
+      TWILIO_PHONE_NUMBER: ((twilio-phone-number))
+      TWILIO_ACCOUNT_SID: ((twilio-account-sid))
+  - put: build-artifacts
+    params:
+      file: hazardbot-build-artifacts/hazardbot-*.tgz
+- name: deploy-new-app
+  serial: true
+  plan:
+  - get: build-artifacts
+    passed:
+      - build-and-test
+    trigger: true
+  - get: hazardbot-source
+  - task: get-current-app-color
+    file: hazardbot-source/ci/tasks/get-current-app-info.yml
+    params:
+      APP_NAME: hazardbot
+      PWS_APP_SUFFIX: bet
+      PWS_APP_DOMAIN: ((pws-app-domain))
+      PWS_API: ((pws-api))
+      PWS_ORG: ((pws-organization))
+      PWS_USER: ((deploy-username))
+      PWS_PWD: ((deploy-password))
+      PWS_SPACE: ((pws-space))
+  - task: prepare-app-manifest
+    file: hazardbot-source/ci/tasks/prepare-app-manifest.yml
+    params:
+      APP_NAME: hazardbot
+      PWS_APP_SUFFIX: bet
+      TWILIO_AUTH_TOKEN: ((twilio-auth-token))
+      TWILIO_PHONE_NUMBER: ((twilio-phone-number))
+      TWILIO_ACCOUNT_SID: ((twilio-account-sid))
+  - put: PWS
+    params:
+      manifest: app-manifest-output/manifest-bg.yml
+      path: app-manifest-output/hazardbot-*.jar
+- name: promote-new-version
+  serial: true
+  public: true
+  plan:
+  - get: hazardbot-source
+    trigger: true
+    passed:
+      - deploy-new-app
+  - task: get-current-app-color
+    file: hazardbot-source/ci/tasks/get-current-app-info.yml
+    params:
+      APP_NAME: hazardbot
+      PWS_APP_SUFFIX: bet
+      PWS_APP_DOMAIN: ((pws-app-domain))
+      PWS_API: ((pws-api))
+      PWS_ORG: ((pws-organization))
+      PWS_USER: ((deploy-username))
+      PWS_PWD: ((deploy-password))
+      PWS_SPACE: ((pws-space))
+  - task: switch-app-routes
+    file: hazardbot-source/ci/tasks/update-routes.yml
+    params:
+      APP_NAME: hazardbot
+      PWS_APP_SUFFIX: bet
+      PWS_APP_DOMAIN: ((pws-app-domain))
+      PWS_API: ((pws-api))
+      PWS_ORG: ((pws-organization))
+      PWS_USER: ((deploy-username))
+      PWS_PWD: ((deploy-password))
+      PWS_SPACE: ((pws-space))
