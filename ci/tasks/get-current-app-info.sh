@@ -7,7 +7,9 @@ env
 
 cf api $PWS_API --skip-ssl-validation
 
+set +x
 cf login -u $PWS_USER -p $PWS_PWD -o "$PWS_ORG" -s "$PWS_SPACE"
+set -x
 
 cf apps
 
