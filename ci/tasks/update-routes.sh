@@ -3,7 +3,6 @@
 set -xe
 
 pwd
-env
 
 cf api $PWS_API --skip-ssl-validation
 
