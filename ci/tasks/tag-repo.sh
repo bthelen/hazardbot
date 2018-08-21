@@ -8,4 +8,5 @@ popd
 
 pushd hazardbot-source-head
 echo "git tag -a v1.2 $SHA_TO_TAG"
+echo "test"
 popd
