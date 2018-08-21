@@ -6,7 +6,8 @@ resources:
   source:
     branch: master
     uri: https://github.com/bthelen/hazardbot.git
-    private_key: ((hazardbot-deploy-key))
+    private_key: |
+      ((hazardbot-deploy-key))
 
 jobs:
 - name: tag-src
