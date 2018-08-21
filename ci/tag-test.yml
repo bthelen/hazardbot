@@ -5,7 +5,7 @@ resources:
   check_every: 1m
   source:
     branch: master
-    uri: https://github.com/bthelen/hazardbot.git
+    uri: git@github.com:bthelen/hazardbot.git
     private_key: |
       ((hazardbot-deploy-key))
 
