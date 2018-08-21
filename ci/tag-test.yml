@@ -1,0 +1,23 @@
+resources:
+- name: hazardbot-source
+  type: git
+  webhook_token: ((git-webhook-token))
+  check_every: 1h
+  source:
+    branch: master
+    uri: https://github.com/bthelen/hazardbot.git
+
+jobs:
+- name: tag-src
+  serial: true
+  plan:
+  - get: hazardbot-source
+    trigger: true
+  - task: build-and-test
+    file: hazardbot-source/ci/tasks/create-version-file.yml
+  - put: hazardbot-source
+    params:
+      repository: hazardbot-source
+      tag: hazardbot-source/version
+      tag_prefix: "v"
+      tag_only: true
