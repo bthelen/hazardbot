@@ -18,6 +18,6 @@ jobs:
   - put: hazardbot-source
     params:
       repository: hazardbot-source
-      tag: hazardbot-source/version
+      tag: version-file/version
       tag_prefix: "v"
       tag_only: true

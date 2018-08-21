@@ -2,8 +2,8 @@
 
 set -xe
 
-cd hazardbot-source
+mkdir version-file
 
 readonly VERSION=$(date +%Y%m%d%H%M%S)
 
-echo $VERSION > version
+echo $VERSION > version-file/version
