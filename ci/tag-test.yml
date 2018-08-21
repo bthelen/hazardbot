@@ -8,6 +8,15 @@ resources:
     uri: git@github.com:bthelen/hazardbot.git
     private_key: |
       ((hazardbot-deploy-key))
+- name: hazardbot-source-head
+  type: git
+  webhook_token: ((git-webhook-token))
+  check_every: 1m
+  source:
+    branch: master
+    uri: git@github.com:bthelen/hazardbot.git
+    private_key: |
+      ((hazardbot-deploy-key))
 
 jobs:
 - name: tag-src
@@ -15,11 +24,9 @@ jobs:
   plan:
   - get: hazardbot-source
     trigger: true
+  - get: hazardbot-source-head
+    trigger: true
   - task: build-and-test
     file: hazardbot-source/ci/tasks/create-version-file.yml
-  - put: hazardbot-source
-    params:
-      repository: hazardbot-source
-      tag: version-file/version
-      tag_prefix: "v"
-      tag_only: true
+  - task: tag-repo
+    file: hazardbot-source/ci/tasks/tag-repo.yml
